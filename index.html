@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            color: #333;
+            font-size: 62.5%;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .main {
+            background: #f1f1f1;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .form {
+            width: 360px;
+            min-height: 100px;
+            padding: 32px 24px;
+            text-align: center;
+            background: #fff;
+            border-radius: 2px;
+            margin: 24px;
+            align-self: center;
+            box-shadow: 0 2px 5px 0 rgba(51, 62, 73, 0.1);
+        }
+
+        .form .heading {
+            font-size: 2rem;
+        }
+
+        .form .desc {
+            text-align: center;
+            color:#636d77;
+            font-size: 1.6rem;
+            font-weight: lighter;
+            line-height: 2.4rem;
+            margin-top: 16px;
+            font-weight: 300;
+        }
+
+        .desc .fa-heart {
+            color: #CC0000;
+        }
+        
+        .form-group {
+            display: flex;
+            margin-bottom: 16px;
+            flex-direction: column;
+        }
+
+        .form-label,
+        .form-message {
+            text-align: left;
+
+        }
+
+        .form-label {
+            font-weight: 700;
+            padding-bottom: 6px;
+            line-height: 1.8rem;
+            font-size: 1.4rem;
+        }
+
+        .form-control {
+            height: 40px;
+            padding: 8px 12px;
+            border: 1px solid #b3b3b3;
+            border-radius: 3px;
+            outline: none;
+            font-size: 1.4rem;
+        }
+
+        .form-control:hover {
+            border-color: #666666;
+        }
+
+        .form-group.invalid .form-control {
+            border-color: #CC0000;
+        }
+
+        .form-group.invalid .form-message {
+            color: #CC0000;
+        }
+
+        .form-message {
+            font-size: 1.2rem;
+            line-height: 1.6rem;
+            padding: 4px 0 0; 
+        }
+
+        .form-submit {
+            outline: none;
+            background-color: #666666;
+            border: 1px solid #666666;
+            margin-top: 12px;
+            padding: 12px 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            color: #fff;
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        .form-submit:hover {
+            background: #797777;
+        }
+
+        .spacer {
+            margin-top: 36px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <form action="" method="POST" class="form" id="form-1">
+            <h3 class="heading">Thành viên đăng ký</h3>
+            <p class="desc">Stop thinking start doing <i class="fa fa-heart" aria-hidden="true"></i></p>
+    
+            <div class="spacer"></div>
+    
+            <div class="form-group">
+                <label for="fullname" class="form-label">Tên đầy đủ</label>
+                <input id="fullname" name="fullname" class="form-control" type="text" placeholder="VD: Linh Võ">
+                <span class="form-message"></span>
+            </div>
+    
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input id="email" name="email" class="form-control" type="email" placeholder="VD: email@domain.com">
+                <span class="form-message"></span>
+            </div>
+    
+            <div class="form-group">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input id="password" name="password" class="form-control" type="password" placeholder="Nhập mật khẩu">
+                <span class="form-message"></span>
+            </div>
+    
+            <div class="form-group">
+                <label for="repassword" class="form-label">Nhập lại mật khẩu</label>
+                <input id="repassword" name="repassword" class="form-control" type="password" placeholder="Nhập lại mật khẩu">
+                <span class="form-message"></span>
+            </div>
+    
+            <button type="submit" class="form-submit">Đăng ký</button>
+        </form>
+    </div>
+
+    <script src="validator.js"></script>
+
+    <script>
+        // Mong muốn thực hiện như sau
+        
+        Validator ({
+            form: '#form-1',
+            errorSelector: '.form-message',
+            rules: [
+                Validator.isRequired('#fullname', 'Vui lòng nhập tên đầy đủ!'),
+                Validator.isRequired('#email'),
+                Validator.isEmail('#email'),
+                Validator.minLength('#password', 6),
+                Validator.isRequired('#repassword'),
+                Validator.isRepass('#repassword', function() {
+                    return document.querySelector('#form-1 #password').value;
+                }, 'Mật khẩu nhập lại không chính xác!')
+            ],
+            onSubmit: function (data) {
+                // Call API
+                console.log(data);
+            }
+        });
+    </script>
+</body>
+</html>
